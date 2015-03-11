@@ -26,7 +26,7 @@ ns.BlackjackHand.prototype.getValue = function() {
 	for (i=0;i<cardsInHand.length;i++) {
 		var card = cardsInHand[i];
 		var cardVal = card.getRank();
-		if (cardVal > 10) { CardVal = 10; }
+		if (cardVal > 10) { cardVal = 10; }
 		if (cardVal === 1) { ace = true; }
 		handVal += cardVal;
 	}
