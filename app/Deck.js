@@ -9,15 +9,15 @@
 	into real deck
 */
 
-// add myNameSpace to not pollute global object
-window.myNameSpace = window.myNameSpace || {};
+// add NameSpace to not pollute global object
+window.ns = window.ns || {};
 
-myNameSpace.Deck = function() {
+ns.Deck = function() {
 	// populate deck
 	this.cards = [];
 	for (var rank = 1; rank < 14; rank++) {
 		for (var suit = 0; suit < 4; suit++) {
-			this.cards.push(new myNameSpace.Card(rank, suit))
+			this.cards.push(new ns.Card(rank, suit))
 		}
 	}
 
@@ -26,7 +26,7 @@ myNameSpace.Deck = function() {
 }
 
 
-myNameSpace.Deck.prototype.shuffle = function() {
+ns.Deck.prototype.shuffle = function() {
 	// shuffles the deck of remaining cards
 	for (var i=0; i<this.cards.length;i++) {
 		var rand = Math.floor(Math.random() * this.cards.length);
@@ -36,7 +36,7 @@ myNameSpace.Deck.prototype.shuffle = function() {
 	}
 };
 
-myNameSpace.Deck.prototype.combine = function() {
+ns.Deck.prototype.combine = function() {
 	// combines remaining cards with used cards to form a 
 	// new deck. Then shuffles.
 	this.cards = this.cards.concat(this.usedCards);
@@ -44,7 +44,7 @@ myNameSpace.Deck.prototype.combine = function() {
 	this.shuffle();
 }
 
-myNameSpace.Deck.prototype.deal = function() {
+ns.Deck.prototype.deal = function() {
 	// returns a card from the "top" of the deck
 	if (this.cards.length === 0) {
 		this.combine();
@@ -54,7 +54,7 @@ myNameSpace.Deck.prototype.deal = function() {
 	return dealt;
 }
 
-myNameSpace.Deck.prototype.cardsLeft = function() {
+ns.Deck.prototype.cardsLeft = function() {
 	// returns remaining number of cards in deck
 	return this.cards.length;
 }

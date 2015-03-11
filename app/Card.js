@@ -3,10 +3,10 @@ Card "class". Try to make as general as possible
 */
 
 // add myNameSpace to not pollute global object
-window.myNameSpace = window.myNameSpace || {};
+window.ns = window.ns || {};
 
 
-myNameSpace.Card = function(rank, suit) {
+ns.Card = function(rank, suit) {
 	// rank is a numeric value 1-13
 	// suit is a numeric value 0-3
 	this.rank = rank;
@@ -31,18 +31,18 @@ myNameSpace.Card = function(rank, suit) {
 
 }
 
-myNameSpace.Card.prototype.getSuit = function() {
+ns.Card.prototype.getSuit = function() {
 	return this.suit;
 }
-myNameSpace.Card.prototype.getRank = function() {
+ns.Card.prototype.getRank = function() {
 	return this.rank;
 }
 
-myNameSpace.Card.prototype.getSuitAsString = function() {
+ns.Card.prototype.getSuitAsString = function() {
 	return ["Spades", "Clubs", "Diamonds", "Hearts"][this.suit];
 }
 
-myNameSpace.Card.prototype.getRankAsString = function() {
+ns.Card.prototype.getRankAsString = function() {
 	var rankMap = {
 		"1"	:"Ace",
 		"11": "Jack", 
@@ -51,6 +51,6 @@ myNameSpace.Card.prototype.getRankAsString = function() {
 	}
 	return rankMap[this.rank] || this.rank;
 }
-myNameSpace.Card.prototype.toString = function() {
+ns.Card.prototype.toString = function() {
 	return this.getRankAsString() + " of " + this.getSuitAsString();
 }
