@@ -32,14 +32,17 @@ ns.BlackjackHand.prototype.getValue = function() {
 	}
 
 	// Now handVal is value of hand with aces === 1
+	return ace ? this.getValueWithAce(handVal) : handVal
+}
+
+ns.BlackjackHand.prototype.getValueWithAce = function(handVal) {
+	// (separated to easily overwrite later for soft17 logic)
 	// If handVal + 10 is <= 21, then add 10 to handVal
 	// to make one ace worth 11. Else, return handVal.
 	// Only accounting for one ace to equal 11 since 2
 	// Aces cannot both equal 11 (would bust)
-
-	if (ace && (handVal + 10 <= 21)) {
+	if (handVal + 10 <= 21) {
 		handVal += 10;
 	}
-
 	return handVal;
 }
