@@ -42,6 +42,11 @@ ns.BlackjackHand.prototype.getValueWithAce = function(handVal) {
 	return handVal;
 }
 
+// DOM variables
+var $playerCards = $("#player").find("div.cards");
+var $dealerCards = $("#dealer").find("div.cards");
+
+
 // function start new game (start on page load)
 // new game should deal cards
 var newGame = function() {
@@ -64,6 +69,8 @@ var newGame = function() {
 		console.log("Blackjack!");
 		return compare(playerHand, dealerHand)
 	}
+
+
 }
 
 var displayValues = function() {
@@ -110,6 +117,11 @@ var main = function() {
 	newGame(); 		// start new game
 
 
+}
+
+var addCard = function(player) {
+	player.append("<div class='card'>TEST</div>");
+	
 }
 
 // Load main when document is ready
