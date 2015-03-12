@@ -33,6 +33,8 @@ RULES:
 var deck 		= deck 			|| new ns.Deck();
 var playerHand 	= playerHand 	|| new ns.BlackjackHand();
 var dealerHand	= dealerHand	|| new ns.BlackjackHand();
+var gameResult;
+
 // DOM variables
 var $playerHand = $("#player").find("div.cards");
 var $dealerHand = $("#dealer").find("div.cards");
@@ -76,6 +78,22 @@ ns.Hand.prototype.addCard = (function() {
 	}
 })();
 
+ns.Card.prototype.getCssClass = function() {
+	// returns a css class name for card sprite
+	return "card-" + this.getRankAsString() + "-" + this.getSuitAsString();
+}
+
+
+var main = function() {
+	// main logic for game with win/lose results
+	newGameDeal();
+	// check for BlackJack
+	if (playerHand.getValue() === 21 || dealerHand.getValue() === 21) {
+		console.log("Blackjack!");
+		return compare(playerHand, dealerHand)
+	} 
+}
+
 // new game should shuffle full deck, deal cards
 var newGameDeal = function() {
 	// reshuffle full deck
@@ -97,6 +115,9 @@ var newGameDeal = function() {
 	// display score
 	showScore();
 
+	// display buttons
+	$("#game").find("button").show();
+
 }
 
 var displayValues = function() {
@@ -112,23 +133,32 @@ var compare = function(playerHand, dealerHand) {
 	// "PUSH" = tie
 	var playerVal = playerHand.getValue();
 	var dealerVal = dealerHand.getValue();
-	if 		(playerVal > 21) {return false}
-	else if (dealerVal > 21) {return true}
+	var gameResult;
+
+	// game result
+	if 		(playerVal > 21) {gameResult = false}
+	else if (dealerVal > 21) {gameResult = true}
 	else 	{
-		if (playerVal === dealerVal) {return "PUSH"}
-		else { return playerVal > dealerVal; }
+		if (playerVal === dealerVal) {gameResult = "PUSH"}
+		else { gameResult = playerVal > dealerVal; }
 	}
+
+	// display results
+	console.log(gameResult)
+	$("#game").find("button[name !='main']").hide();
+
+	return gameResult;
 }
 
 var hit = function(hand) {
 	// deals a card to a given hand
 	hand.addCard(deck.deal());
+	// show score
+	showScore();
 	// for busts, auto compare
 	if (hand.getValue() > 21) {
 		return compare(playerHand, dealerHand);
 	}
-	// show score and compare
-	showScore();
 }
 
 var dealer = function() {
@@ -137,28 +167,24 @@ var dealer = function() {
 	while (dealerHand.getValue() < 17) {
 		hit(dealerHand);
 	}
+	showScore();
 	return compare(playerHand, dealerHand)
 }
 
 var showScore = function() {
-	$("#player").find("div.score").html(playerHand.getValue());
-	$("#dealer").find("div.score").html(dealerHand.getValue());
-}
-
-var main = function() {
-	// main logic for game with win/lose results
-	newGameDeal();
-	// check for BlackJack
-	if (playerHand.getValue() === 21 || dealerHand.getValue() === 21) {
-		console.log("Blackjack!");
-		return compare(playerHand, dealerHand)
+	// displays score on webpage
+	var playerScore = playerHand.getValue();
+	var dealerScore = dealerHand.getValue();
+	if (playerScore > 21) {
+		playerScore = "BUST";
 	} 
+	if (dealerScore > 21) {
+		dealerScore = "BUST";
+	}
 
-
-	console.log("test")
-
+	$("#player").find("div.score").html(playerScore);
+	$("#dealer").find("div.score").html(dealerScore);
 }
-
 
 // Load main when document is ready
 $(document).ready(main())
