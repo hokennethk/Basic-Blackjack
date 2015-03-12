@@ -33,7 +33,11 @@ RULES:
 var deck 		= deck 			|| new ns.Deck();
 var playerHand 	= playerHand 	|| new ns.BlackjackHand();
 var dealerHand	= dealerHand	|| new ns.BlackjackHand();
-// change Ace logic for dealer (soft17)
+// DOM variables
+var $playerHand = $("#player").find("div.cards");
+var $dealerHand = $("#dealer").find("div.cards");
+
+// change Ace logic for dealer (hit on soft17 rule)
 dealerHand.prototype = Object.create(ns.BlackjackHand.prototype);
 ns.BlackjackHand.prototype.getValueWithAce = function(handVal) {
 	if (handVal !== 7 && handVal + 10 <= 21) {
@@ -42,34 +46,56 @@ ns.BlackjackHand.prototype.getValueWithAce = function(handVal) {
 	return handVal;
 }
 
-// DOM variables
-var $playerCards = $("#player").find("div.cards");
-var $dealerCards = $("#dealer").find("div.cards");
+/*
+Below I decided to edit ns.Hand.prototype.addCard method since
+everytime a card is added to the hand, I want it to display on the page.
+My thinking was that combining the actions would reduce the error of
+dealing a card to a hand and not having it display.
 
+However, the if/else statement I have below only applies to player and dealer hands
+if I wanted to refactor this code to include more players, this would need to change
 
-// function start new game (start on page load)
-// new game should deal cards
-var newGame = function() {
-	// handle deck
+*/
+ns.Hand.prototype.addCard = (function() {
+	var cached = ns.Hand.prototype.addCard;
+	return function(card) {
+		// apply original function
+		cached.apply(this, arguments);
+		// display card on webpage
+		if (this === playerHand) 		{ var player = $playerHand; }
+		else if (this === dealerHand) 	{ var player = $dealerHand; }
+
+		player.append("<div class='card'></div>");
+		if (player === $playerHand) {
+			var lastCard = playerHand.hand[playerHand.hand.length-1];
+		} else if (player === $dealerHand) {
+			var lastCard = dealerHand.hand[dealerHand.hand.length-1];
+		}
+		player.last("div.card")
+			.append(lastCard.toString())
+	}
+})();
+
+// new game should shuffle full deck, deal cards
+var newGameDeal = function() {
+	// reshuffle full deck
 	deck.combine();	// put used cards back (playing with full deck)
 	deck.shuffle();
 
-	// handle hands
+	// empty hands
 	playerHand.clearHand();
 	dealerHand.clearHand();
+	$playerHand.empty();
+	$dealerHand.empty();
 
 	// deal cards
 	for (var i=0;i<2;i++) {
 		playerHand.addCard(deck.deal());
-		dealerHand.addCard(deck.deal())
+		dealerHand.addCard(deck.deal());
 	}
 
-	// check for BlackJack
-	if (playerHand.getValue() === 21 || dealerHand.getValue() === 21) {
-		console.log("Blackjack!");
-		return compare(playerHand, dealerHand)
-	}
-
+	// display score
+	showScore();
 
 }
 
@@ -101,6 +127,8 @@ var hit = function(hand) {
 	if (hand.getValue() > 21) {
 		return compare(playerHand, dealerHand);
 	}
+	// show score and compare
+	showScore();
 }
 
 var dealer = function() {
@@ -112,17 +140,25 @@ var dealer = function() {
 	return compare(playerHand, dealerHand)
 }
 
+var showScore = function() {
+	$("#player").find("div.score").html(playerHand.getValue());
+	$("#dealer").find("div.score").html(dealerHand.getValue());
+}
+
 var main = function() {
-	// main logic for game
-	newGame(); 		// start new game
+	// main logic for game with win/lose results
+	newGameDeal();
+	// check for BlackJack
+	if (playerHand.getValue() === 21 || dealerHand.getValue() === 21) {
+		console.log("Blackjack!");
+		return compare(playerHand, dealerHand)
+	} 
 
+
+	console.log("test")
 
 }
 
-var addCard = function(player) {
-	player.append("<div class='card'>TEST</div>");
-	
-}
 
 // Load main when document is ready
 $(document).ready(main())
