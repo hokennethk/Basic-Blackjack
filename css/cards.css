@@ -1,0 +1,211 @@
+.card {
+	background-image: url('../CardImages.jpg');
+}
+
+.card-Ace-Spades{
+	background-position: 0px 0px;
+}
+
+.card-Ace-Clubs{
+	background-position: 0px -315px;
+}
+
+.card-Ace-Diamonds{
+	background-position: 0px -630px;
+}
+
+.card-Ace-Hearts{
+	background-position: 0px -945px;
+}
+
+.card-2-Spades{
+	background-position: -225px 0px;
+}
+
+.card-2-Clubs{
+	background-position: -225px -315px;
+}
+
+.card-2-Diamonds{
+	background-position: -225px -630px;
+}
+
+.card-2-Hearts{
+	background-position: -225px -945px;
+}
+
+.card-3-Spades{
+	background-position: -450px 0px;
+}
+
+.card-3-Clubs{
+	background-position: -450px -315px;
+}
+
+.card-3-Diamonds{
+	background-position: -450px -630px;
+}
+
+.card-3-Hearts{
+	background-position: -450px -945px;
+}
+
+.card-4-Spades{
+	background-position: -675px 0px;
+}
+
+.card-4-Clubs{
+	background-position: -675px -315px;
+}
+
+.card-4-Diamonds{
+	background-position: -675px -630px;
+}
+
+.card-4-Hearts{
+	background-position: -675px -945px;
+}
+
+.card-5-Spades{
+	background-position: -900px 0px;
+}
+
+.card-5-Clubs{
+	background-position: -900px -315px;
+}
+
+.card-5-Diamonds{
+	background-position: -900px -630px;
+}
+
+.card-5-Hearts{
+	background-position: -900px -945px;
+}
+
+.card-6-Spades{
+	background-position: -1125px 0px;
+}
+
+.card-6-Clubs{
+	background-position: -1125px -315px;
+}
+
+.card-6-Diamonds{
+	background-position: -1125px -630px;
+}
+
+.card-6-Hearts{
+	background-position: -1125px -945px;
+}
+
+.card-7-Spades{
+	background-position: -1350px 0px;
+}
+
+.card-7-Clubs{
+	background-position: -1350px -315px;
+}
+
+.card-7-Diamonds{
+	background-position: -1350px -630px;
+}
+
+.card-7-Hearts{
+	background-position: -1350px -945px;
+}
+
+.card-8-Spades{
+	background-position: -1575px 0px;
+}
+
+.card-8-Clubs{
+	background-position: -1575px -315px;
+}
+
+.card-8-Diamonds{
+	background-position: -1575px -630px;
+}
+
+.card-8-Hearts{
+	background-position: -1575px -945px;
+}
+
+.card-9-Spades{
+	background-position: -1800px 0px;
+}
+
+.card-9-Clubs{
+	background-position: -1800px -315px;
+}
+
+.card-9-Diamonds{
+	background-position: -1800px -630px;
+}
+
+.card-9-Hearts{
+	background-position: -1800px -945px;
+}
+
+.card-10-Spades{
+	background-position: -2025px 0px;
+}
+
+.card-10-Clubs{
+	background-position: -2025px -315px;
+}
+
+.card-10-Diamonds{
+	background-position: -2025px -630px;
+}
+
+.card-10-Hearts{
+	background-position: -2025px -945px;
+}
+
+.card-Jack-Spades{
+	background-position: -2250px 0px;
+}
+
+.card-Jack-Clubs{
+	background-position: -2250px -315px;
+}
+
+.card-Jack-Diamonds{
+	background-position: -2250px -630px;
+}
+
+.card-Jack-Hearts{
+	background-position: -2250px -945px;
+}
+
+.card-Queen-Spades{
+	background-position: -2475px 0px;
+}
+
+.card-Queen-Clubs{
+	background-position: -2475px -315px;
+}
+
+.card-Queen-Diamonds{
+	background-position: -2475px -630px;
+}
+
+.card-Queen-Hearts{
+	background-position: -2475px -945px;
+}
+
+.card-King-Spades{
+	background-position: -2700px 0px;
+}
+
+.card-King-Clubs{
+	background-position: -2700px -315px;
+}
+
+.card-King-Diamonds{
+	background-position: -2700px -630px;
+}
+
+.card-King-Hearts{
+	background-position: -2700px -945px;
+}
