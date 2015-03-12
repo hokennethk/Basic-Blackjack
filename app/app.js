@@ -109,7 +109,10 @@ var main = function() {
 	// main logic for game
 	newGame(); 		// start new game
 
+
 }
 
+// Load main when document is ready
+$(document).ready(main())
 
 	

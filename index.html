@@ -7,12 +7,42 @@
 		<script src="app/Deck.js"></script>
 		<script src="app/Hand.js"></script>
 		<script src="app/BlackjackHand.js"></script>
-		<script src="app/app.js"></script>
 	</head>
 	<body>
+		<header>
+			<h1>BLACKJACK</h1>
+		</header>
+		<section>
+			<div id="game">
+				<div id="player">
+					<div class="player_name">
+						<h3>Player</h3>
+					</div>
+					<div class="cards">
+					</div>
+				</div>
+
+				<div class="buttons">
+					<button type="button" onclick="newGame()">New Game</button>
+					<button type="button" onclick="displayValues()">Log Values</button>
+					<button type="button" onclick="hit(playerHand)">Hit!</button>
+				</div>
+
+				<div id="dealer">
+					<div class="cards">
+					</div>
+					<div class="player_name">
+						<h3>Dealer</h3>
+					</div>
+				</div>
+			</div>
+		</section>
 
 
-
+		<!-- Load jQuery -->
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<!-- Load main app -->
+		<script src="app/app.js"></script>
 	</body>
 </html>
 
