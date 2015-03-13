@@ -1,4 +1,25 @@
+h1 {
+	font-family: Verdana, Geneva, sans-serif;
+	text-align: center;
+}
+
+section {
+	text-align: center;
+}
+
 button {
 	padding: 10px;
 	margin: 10px;
+}
+
+.hide {
+	visibility: hidden;
+}
+
+.buttons {
+	height: 50px;
+}
+
+#player {
+	display: inline-block;
 }

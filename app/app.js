@@ -67,14 +67,21 @@ ns.Hand.prototype.addCard = (function() {
 		if (this === playerHand) 		{ var player = $playerHand; }
 		else if (this === dealerHand) 	{ var player = $dealerHand; }
 
-		player.append("<div class='card'></div>");
+		// jQuery to make cards appear
+		var $card = $("<div class='card'></div>").hide();
+		player.append($card);
+		player.find
 		if (player === $playerHand) {
 			var lastCard = playerHand.hand[playerHand.hand.length-1];
 		} else if (player === $dealerHand) {
 			var lastCard = dealerHand.hand[dealerHand.hand.length-1];
 		}
 		player.find("div.card").last().addClass(lastCard.getCssClass())
-		//player.last("div.card").append(lastCard.toString())
+		player.find("div.card").last().show("slow");
+		//player.find("div.card").first().removeClass("hide", 1000)
+
+
+		
 	}
 })();
 
@@ -126,7 +133,7 @@ var newGameDeal = function() {
 }
 
 var displayValues = function() {
-	// logs values to console
+	// logs values to console (for testing)
 	console.log("Player Hand = ", playerHand.getValue());
 	console.log("Dealer Hand = ", dealerHand.getValue())
 }
@@ -152,9 +159,7 @@ var compare = function(playerHand, dealerHand) {
 	console.log(gameResult)
 	$("#game").find("button[name !='main']").hide();
 
-	// reveal hidden dealer card
-	$dealerHand.find("div.card-Back").remove();
-	return gameResult;
+	return gameResult;remove
 }
 
 var hit = function(hand) {
@@ -171,9 +176,14 @@ var hit = function(hand) {
 var dealer = function() {
 	// dealer logic is automated
 	// runs after player stands
-	while (dealerHand.getValue() < 17) {
+	// reveal hidden dealer card
+	$dealerHand.find("div.card-Back").fadeOut("slow", function() {
+		while (dealerHand.getValue() < 17) {
 		hit(dealerHand);
+
 	}
+	});
+	
 	showScore();
 	return compare(playerHand, dealerHand)
 }
