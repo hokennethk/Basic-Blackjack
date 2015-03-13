@@ -206,7 +206,7 @@ var dealerReveal = function (callback) {
 	// reveals dealer's hidden card. Takes an optional callback function
 	// to perform AFTER revealing card, such as performing
 	// addition hits to dealer's hand if player hasn't busted
-	$dealerHand.find("div.card-Back").fadeOut("slow", callback);
+	$dealerHand.find("div.card-Back").fadeOut(300, callback);
 
 }
 var dealer = function() {
