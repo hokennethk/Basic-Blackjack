@@ -169,21 +169,28 @@ var hit = function(hand) {
 	showScore();
 	// for busts, auto compare
 	if (hand.getValue() > 21) {
+		dealerReveal();
 		return compare(playerHand, dealerHand);
 	}
 }
 
+
+var dealerReveal = function (callback) {
+	// reveals dealer's hidden card. Takes an optional callback function
+	// to perform AFTER revealing card, such as performing
+	// addition hits to dealer's hand if player hasn't busted
+	$dealerHand.find("div.card-Back").fadeOut("slow", callback);
+}
 var dealer = function() {
 	// dealer logic is automated
 	// runs after player stands
-	// reveal hidden dealer card
-	$dealerHand.find("div.card-Back").fadeOut("slow", function() {
-		while (dealerHand.getValue() < 17) {
-		hit(dealerHand);
 
-	}
-	});
-	
+	dealerReveal(function() {
+		// reveal dealer card and hit after revealing
+		while (dealerHand.getValue() < 17) {
+			hit(dealerHand);
+		};
+	})
 	showScore();
 	return compare(playerHand, dealerHand)
 }
