@@ -73,8 +73,8 @@ ns.Hand.prototype.addCard = (function() {
 		} else if (player === $dealerHand) {
 			var lastCard = dealerHand.hand[dealerHand.hand.length-1];
 		}
-		player.last("div.card")
-			.append(lastCard.toString())
+		player.find("div.card").last().addClass(lastCard.getCssClass())
+		//player.last("div.card").append(lastCard.toString())
 	}
 })();
 
@@ -87,11 +87,16 @@ ns.Card.prototype.getCssClass = function() {
 var main = function() {
 	// main logic for game with win/lose results
 	newGameDeal();
+	// initially cover dealer's second card AND limit value to first card
+	$dealerHand.find("div.card").last().append("<div class='card card-Back'></div>");
+
+
 	// check for BlackJack
 	if (playerHand.getValue() === 21 || dealerHand.getValue() === 21) {
 		console.log("Blackjack!");
 		return compare(playerHand, dealerHand)
 	} 
+
 }
 
 // new game should shuffle full deck, deal cards
@@ -147,6 +152,8 @@ var compare = function(playerHand, dealerHand) {
 	console.log(gameResult)
 	$("#game").find("button[name !='main']").hide();
 
+	// reveal hidden dealer card
+	$dealerHand.find("div.card-Back").remove();
 	return gameResult;
 }
 
@@ -185,6 +192,7 @@ var showScore = function() {
 	$("#player").find("div.score").html(playerScore);
 	$("#dealer").find("div.score").html(dealerScore);
 }
+
 
 // Load main when document is ready
 $(document).ready(main())
