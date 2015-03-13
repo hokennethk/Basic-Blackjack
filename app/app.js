@@ -38,6 +38,7 @@ var gameResult;
 // DOM variables
 var $playerHand = $("#player").find("div.cards");
 var $dealerHand = $("#dealer").find("div.cards");
+playersArr = [$playerHand, $dealerHand];
 
 // change Ace logic for dealer (hit on soft17 rule)
 dealerHand.prototype = Object.create(ns.BlackjackHand.prototype);
@@ -60,30 +61,48 @@ if I wanted to refactor this code to include more players, this would need to ch
 */
 ns.Hand.prototype.addCard = (function() {
 	var cached = ns.Hand.prototype.addCard;
-	return function(card) {
+	return function(card, callback) {
 		// apply original function
 		cached.apply(this, arguments);
-		// display card on webpage
-		if (this === playerHand) 		{ var player = $playerHand; }
-		else if (this === dealerHand) 	{ var player = $dealerHand; }
-
+		// adding optional callback to handle webpage display
+		if (callback != undefined) {
+			if (this === playerHand) 		{ var player = $playerHand; }
+			else if (this === dealerHand) 	{ var player = $dealerHand; };
+			callback(player, card);
+		}
+/*
 		// jQuery to make cards appear
 		var $card = $("<div class='card'></div>").hide();
 		player.append($card);
-		player.find
 		if (player === $playerHand) {
 			var lastCard = playerHand.hand[playerHand.hand.length-1];
 		} else if (player === $dealerHand) {
 			var lastCard = dealerHand.hand[dealerHand.hand.length-1];
 		}
-		player.find("div.card").last().addClass(lastCard.getCssClass())
-		player.find("div.card").last().show("slow");
-		//player.find("div.card").first().removeClass("hide", 1000)
-
-
-		
+		player.find("div.card").last().addClass(lastCard.getCssClass());
+		// player.find("div.card").last().show("slow");
+		// player.find("div.card").last().removeClass("hide")
+*/
 	}
 })();
+
+var addCard = function(player, card) {
+	var $card = $("<div class='card'></div>").hide();
+	player.append($card);
+	player.find("div.card").last().addClass(card.getCssClass());
+
+	// animate and show cards on webpage
+	playersArr.forEach(function(player) {
+		(function animate() {
+			player.find("div.card:hidden")
+			.not("div.card-Back")	// don't want to have cardback reappear
+			.first()
+			.show(300, animate)
+		})()
+
+	})
+	
+}
 
 ns.Card.prototype.getCssClass = function() {
 	// returns a css class name for card sprite
@@ -94,13 +113,11 @@ ns.Card.prototype.getCssClass = function() {
 var main = function() {
 	// main logic for game with win/lose results
 	newGameDeal();
-	// initially cover dealer's second card AND limit value to first card
-	$dealerHand.find("div.card").last().append("<div class='card card-Back'></div>");
-
 
 	// check for BlackJack
 	if (playerHand.getValue() === 21 || dealerHand.getValue() === 21) {
 		console.log("Blackjack!");
+		dealerReveal();
 		return compare(playerHand, dealerHand)
 	} 
 
@@ -119,13 +136,23 @@ var newGameDeal = function() {
 	$dealerHand.empty();
 
 	// deal cards
+
 	for (var i=0;i<2;i++) {
-		playerHand.addCard(deck.deal());
-		dealerHand.addCard(deck.deal());
+		// shoddy way of syncing dealt cards with animations
+		var delay = 900;
+		setTimeout(function() {
+			playerHand.addCard(deck.deal(), addCard);
+			showScore();
+		}, delay/2 + delay*i)
+		setTimeout(function() {
+			dealerHand.addCard(deck.deal(), addCard);
+			if (dealerHand.hand.length === 2) {
+				$dealerHand.find("div.card").last().append("<div class='card card-Back'></div>");
+			}
+			showScore();
+		}, delay * i);
 	}
 
-	// display score
-	showScore();
 
 	// display buttons
 	$("#game").find("button").show();
@@ -164,12 +191,12 @@ var compare = function(playerHand, dealerHand) {
 
 var hit = function(hand) {
 	// deals a card to a given hand
-	hand.addCard(deck.deal());
+	hand.addCard(deck.deal(), addCard);
 	// show score
 	showScore();
 	// for busts, auto compare
 	if (hand.getValue() > 21) {
-		dealerReveal();
+		setTimeout(dealerReveal, 500);	// delay for cosmetic purposes
 		return compare(playerHand, dealerHand);
 	}
 }
@@ -180,6 +207,7 @@ var dealerReveal = function (callback) {
 	// to perform AFTER revealing card, such as performing
 	// addition hits to dealer's hand if player hasn't busted
 	$dealerHand.find("div.card-Back").fadeOut("slow", callback);
+
 }
 var dealer = function() {
 	// dealer logic is automated
@@ -188,7 +216,7 @@ var dealer = function() {
 	dealerReveal(function() {
 		// reveal dealer card and hit after revealing
 		while (dealerHand.getValue() < 17) {
-			hit(dealerHand);
+			hit(dealerHand, addCard);
 		};
 	})
 	showScore();

@@ -20,6 +20,10 @@ button {
 	height: 50px;
 }
 
+.cards {
+	height: 150px;
+}
+
 #player {
 	display: inline-block;
 }
