@@ -16,14 +16,36 @@ button {
 	visibility: hidden;
 }
 
-.buttons {
-	height: 50px;
-}
-
 .cards {
 	height: 150px;
 }
 
 #player {
 	display: inline-block;
+}
+
+#game {
+	position: relative;
+	display: inline-block;
+	min-width: 500px;
+}
+
+#mid-box {
+	height: 50px;
+}
+
+#game-result-box {
+	height: 50px;
+}
+
+.win {
+	background-color: green;
+}
+
+.lose {
+	background-color: red;
+}
+
+.push {
+	background-color: yellow;
 }

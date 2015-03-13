@@ -40,6 +40,7 @@ var $playerHand = $("#player").find("div.cards");
 var $dealerHand = $("#dealer").find("div.cards");
 playersArr = [$playerHand, $dealerHand];
 
+
 // change Ace logic for dealer (hit on soft17 rule)
 dealerHand.prototype = Object.create(ns.BlackjackHand.prototype);
 ns.BlackjackHand.prototype.getValueWithAce = function(handVal) {
@@ -49,48 +50,43 @@ ns.BlackjackHand.prototype.getValueWithAce = function(handVal) {
 	return handVal;
 }
 
-/*
-Below I decided to edit ns.Hand.prototype.addCard method since
-everytime a card is added to the hand, I want it to display on the page.
-My thinking was that combining the actions would reduce the error of
-dealing a card to a hand and not having it display.
+//========================================================
+// Editing prototypes to add jquery to manipulate webpage
+//========================================================
+ns.Card.prototype.getCssClass = function() {
+	// returns a css class name for card sprite
+	return "card-" + this.getRankAsString() + "-" + this.getSuitAsString();
+}
 
-However, the if/else statement I have below only applies to player and dealer hands
-if I wanted to refactor this code to include more players, this would need to change
-
-*/
 ns.Hand.prototype.addCard = (function() {
+	// applies original addCard method, and also takes a callback to 
+	// handle jQuery manipulation
 	var cached = ns.Hand.prototype.addCard;
-	return function(card, callback) {
+	return function(card, callback, flipped) {
 		// apply original function
 		cached.apply(this, arguments);
 		// adding optional callback to handle webpage display
 		if (callback != undefined) {
 			if (this === playerHand) 		{ var player = $playerHand; }
 			else if (this === dealerHand) 	{ var player = $dealerHand; };
-			callback(player, card);
+			callback(player, card, flipped);
 		}
-/*
-		// jQuery to make cards appear
-		var $card = $("<div class='card'></div>").hide();
-		player.append($card);
-		if (player === $playerHand) {
-			var lastCard = playerHand.hand[playerHand.hand.length-1];
-		} else if (player === $dealerHand) {
-			var lastCard = dealerHand.hand[dealerHand.hand.length-1];
-		}
-		player.find("div.card").last().addClass(lastCard.getCssClass());
-		// player.find("div.card").last().show("slow");
-		// player.find("div.card").last().removeClass("hide")
-*/
 	}
 })();
 
-var addCard = function(player, card) {
+var addCard = function(player, card, flipped) {
+	// callback used to display card on page after it is added to a hand
 	var $card = $("<div class='card'></div>").hide();
 	player.append($card);
 	player.find("div.card").last().addClass(card.getCssClass());
 
+	// if flipped, add a cardback to hide card
+	if (flipped) {
+		player.find("div.card")
+		.last()
+		.append("<div class='card card-Back'></div>");
+	}
+	
 	// animate and show cards on webpage
 	playersArr.forEach(function(player) {
 		(function animate() {
@@ -98,28 +94,19 @@ var addCard = function(player, card) {
 			.not("div.card-Back")	// don't want to have cardback reappear
 			.first()
 			.show(300, animate)
-		})()
-
+		})();
 	})
 	
 }
 
-ns.Card.prototype.getCssClass = function() {
-	// returns a css class name for card sprite
-	return "card-" + this.getRankAsString() + "-" + this.getSuitAsString();
-}
-
-
 var main = function() {
-	// main logic for game with win/lose results
-	newGameDeal();
+	// hide past results
+	$("#game-result-box").hide()
+	// hide buttons
+	$("#game").find("buttons").hide();
 
-	// check for BlackJack
-	if (playerHand.getValue() === 21 || dealerHand.getValue() === 21) {
-		console.log("Blackjack!");
-		dealerReveal();
-		return compare(playerHand, dealerHand)
-	} 
+	// deal
+	newGameDeal();
 
 }
 
@@ -136,26 +123,38 @@ var newGameDeal = function() {
 	$dealerHand.empty();
 
 	// deal cards
-
-	for (var i=0;i<2;i++) {
-		// shoddy way of syncing dealt cards with animations
-		var delay = 900;
-		setTimeout(function() {
-			playerHand.addCard(deck.deal(), addCard);
-			showScore();
-		}, delay/2 + delay*i)
-		setTimeout(function() {
-			dealerHand.addCard(deck.deal(), addCard);
-			if (dealerHand.hand.length === 2) {
-				$dealerHand.find("div.card").last().append("<div class='card card-Back'></div>");
+	var dealRoundCounter = 1;
+	(function dealRound() {
+			switch(dealRoundCounter) {
+				case 1:
+					playerHand.addCard(deck.deal(), addCard);
+					break;
+				case 2:
+					dealerHand.addCard(deck.deal(), addCard);
+					break;
+				case 3:
+					playerHand.addCard(deck.deal(), addCard);
+					break;
+				case 4:
+					dealerHand.addCard(deck.deal(), addCard, true); // face down
+					break;
+				default:
+					// No more cards, play round
+					// display buttons
+					$("#game").find("button").show();
+					return;
+					break;
 			}
+	
+			// Update player score
 			showScore();
-		}, delay * i);
-	}
+	
+			// timer for calls
+			dealRoundCounter++;
+			setTimeout(dealRound, 500);
+		})();
 
 
-	// display buttons
-	$("#game").find("button").show();
 
 }
 
@@ -185,8 +184,7 @@ var compare = function(playerHand, dealerHand) {
 	// display results
 	console.log(gameResult)
 	$("#game").find("button[name !='main']").hide();
-
-	return gameResult;remove
+	return gameMessage(gameResult);
 }
 
 var hit = function(hand) {
@@ -216,14 +214,15 @@ var dealer = function() {
 	dealerReveal(function() {
 		// reveal dealer card and hit after revealing
 		while (dealerHand.getValue() < 17) {
-			hit(dealerHand, addCard);
+			hit(dealerHand);
 		};
+		showScore();
+		return compare(playerHand, dealerHand)
 	})
-	showScore();
-	return compare(playerHand, dealerHand)
 }
 
 var showScore = function() {
+
 	// displays score on webpage
 	var playerScore = playerHand.getValue();
 	var dealerScore = dealerHand.getValue();
@@ -236,6 +235,30 @@ var showScore = function() {
 
 	$("#player").find("div.score").html(playerScore);
 	$("#dealer").find("div.score").html(dealerScore);
+}
+
+// Handle game messages
+var gameMessage = function(gameResult) {
+	// cases: win, lose, push, blackjack
+	var $gameResult = $("#game-result-box");
+	$gameResult.hide();
+	switch (gameResult) {
+		case true:
+			$gameResult.addClass("win");
+			break;
+		case false:
+			$gameResult.addClass("lose");
+			break;
+		default:
+			$gameResult.addClass("push");
+			break;
+	}
+
+	/* show message */
+	// hide buttons
+	$("div.buttons").hide();
+	// show message
+	$gameResult.show()
 }
 
 
