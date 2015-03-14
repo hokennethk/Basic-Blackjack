@@ -1,5 +1,9 @@
-h1 {
+body {
 	font-family: Verdana, Geneva, sans-serif;
+	background: url("../cream_dust.png") repeat 0 0;
+}
+
+h1 {
 	text-align: center;
 }
 
@@ -62,4 +66,12 @@ button {
 
 .push {
 	background-color: yellow;
+}
+
+#rules p {
+	display: inline-block;
+	text-align: left;
+	font-size: 1em;
+	line-height: 1.3em;
+	max-width: 30em;
 }
