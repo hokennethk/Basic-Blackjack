@@ -49,7 +49,7 @@ button {
 #game {
 	position: relative;
 	display: inline-block;
-	min-width: 500px;
+	min-width: 400px;
 }
 
 #mid-box {
