@@ -102,12 +102,20 @@ var addCard = function(player, card, flipped) {
 var main = function() {
 	// hide past results
 	$("#game-result-box").hide()
+	$("#game-result-box").removeClass();
 	// hide buttons
-	$("#game").find("buttons").hide();
+	$("div.buttons").css("visibility", "hidden").show();
 
 	// deal
 	newGameDeal();
+}
 
+var showButtons = function () {
+	$("div.buttons").css("visibility", "visible");
+}
+
+var hideButtons = function () {
+	$("div.buttons").css("visibility", "hidden");
 }
 
 // new game should shuffle full deck, deal cards
@@ -141,7 +149,7 @@ var newGameDeal = function() {
 				default:
 					// No more cards, play round
 					// display buttons
-					$("#game").find("button").show();
+					showButtons();
 					return;
 					break;
 			}
@@ -153,9 +161,6 @@ var newGameDeal = function() {
 			dealRoundCounter++;
 			setTimeout(dealRound, 500);
 		})();
-
-
-
 }
 
 var displayValues = function() {
@@ -183,7 +188,6 @@ var compare = function(playerHand, dealerHand) {
 
 	// display results
 	console.log(gameResult)
-	$("#game").find("button[name !='main']").hide();
 	return gameMessage(gameResult);
 }
 
@@ -245,12 +249,15 @@ var gameMessage = function(gameResult) {
 	switch (gameResult) {
 		case true:
 			$gameResult.addClass("win");
+			$("div.result-message").last().text("test")
 			break;
 		case false:
 			$gameResult.addClass("lose");
+			$("div.result-message").last().text("test")
 			break;
 		default:
 			$gameResult.addClass("push");
+			$("div.result-message").last().text("test")
 			break;
 	}
 

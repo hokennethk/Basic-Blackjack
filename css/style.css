@@ -8,9 +8,27 @@ section {
 }
 
 button {
+	display: inline-block;
 	padding: 10px;
 	margin: 10px;
 }
+
+#game-result-box {
+	position: relative;
+	height: 50px;
+}
+
+#game-result-box button {
+	position: absolute;
+	right: 0px;
+}
+
+.result-message {
+	position: absolute;
+	left: 0px;
+	display: inline-block;
+}
+
 
 .hide {
 	visibility: hidden;
@@ -31,10 +49,6 @@ button {
 }
 
 #mid-box {
-	height: 50px;
-}
-
-#game-result-box {
 	height: 50px;
 }
 
