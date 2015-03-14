@@ -103,6 +103,7 @@ var main = function() {
 	// hide past results
 	$("#game-result-box").hide()
 	$("#game-result-box").removeClass();
+	$("#game-result-box").find("div.result-message").remove();
 	// hide buttons
 	$("div.buttons").css("visibility", "hidden").show();
 
@@ -246,18 +247,19 @@ var gameMessage = function(gameResult) {
 	// cases: win, lose, push, blackjack
 	var $gameResult = $("#game-result-box");
 	$gameResult.hide();
+	$gameResult.append("<div class='result-message'></div>");
 	switch (gameResult) {
 		case true:
 			$gameResult.addClass("win");
-			$("div.result-message").last().text("test")
+			$("div.result-message").last().text("You Win!")
 			break;
 		case false:
 			$gameResult.addClass("lose");
-			$("div.result-message").last().text("test")
+			$("div.result-message").last().text("You lose :(")
 			break;
 		default:
 			$gameResult.addClass("push");
-			$("div.result-message").last().text("test")
+			$("div.result-message").last().text("PUSH!")
 			break;
 	}
 
