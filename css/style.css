@@ -23,8 +23,12 @@ section {
 
 button {
 	display: inline-block;
+	color: #ffffff;
+	font-size: 16px;
+	background: #1ACCBD;
 	padding: 10px;
 	margin: auto 10px;
+	border: 0;
 }
 
 #game-result-box {
@@ -36,7 +40,6 @@ button {
 #game-result-box button {
 	position: absolute;
 	right: 0;
-	min-width: 400px;
 	height: 50px;
 	margin: 0;
 
