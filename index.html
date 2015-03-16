@@ -11,44 +11,71 @@
 	</head>
 	<body>
 		<div class="container-narrow">
-			<header>
-				<h1>BLACKJACK</h1>
-			</header>
-			<section>
-				<div id="game">
-					<div id="dealer">					
-						<div class="player-name">
-							<h3>Dealer</h3>
+			<div class="repsonsive-header">
+				<header>
+					<h1>BLACKJACK</h1>
+				</header>
+				<section>
+					<div id="game">
+						<div id="dealer">					
+							<div class="player-name">
+								<h3>Dealer</h3>
+							</div>
+							<div class="score"></div>
+							<div class="cards"></div>
 						</div>
-						<div class="score"></div>
-						<div class="cards"></div>
-					</div>
 
-					<div id="mid-box">
-						<div class="buttons">
-							<button type="button" name="main"onclick="main()">New Game</button>
-							<button type="button" name="hit" onclick="hit(playerHand)">Hit!</button>
-							<button type="button" name="stand" onclick="dealer()">Stand</button>
+						<div id="mid-box">
+							<div class="buttons">
+								<button type="button" name="main"onclick="main()">New Game</button>
+								<button type="button" name="hit" onclick="hit(playerHand)">Hit!</button>
+								<button type="button" name="stand" onclick="dealer()">Stand</button>
+							</div>
+							<div id="game-result-box">
+								<button type="button" name="main"onclick="main()">New Game</button>
+							</div>
 						</div>
-						<div id="game-result-box">
-							<button type="button" name="main"onclick="main()">New Game</button>
-						</div>
-					</div>
 
-					<div id="player">
-						<div class="cards"></div>	
-						<div class="player-name">
-							<h3>Player</h3>
+						<div id="player">
+							<div class="cards"></div>	
+							<div class="player-name">
+								<h3>Player</h3>
+							</div>
+							<div class="score"></div>
 						</div>
-						<div class="score"></div>
 					</div>
-				</div>
-			</section>
+				</section>
+			</div>
+			<!-- div.responsive-header -->
 			<section>
 				<div id="rules">
 					<h2>Rules</h2>
 					<p>
-						Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+						<h5>Basic Rules of Blackjack:</h5>
+						<ul>
+							<!-- Basic Blackjack rules -->
+							<li>Player and Dealer are dealt two cards. Dealer's second card is hidden</li>
+							<li>Goal of game is to reach a final hand value higher than the dealer's hand without exceeding 21</li>
+							<li>Hands that exceed 21 will "bust"</li>
+							<li>A hand that busts first loses automatically</li>
+							<li>Player can hit (draw card) or stand (keep hand value) during turn</li>
+							<li>Dealer turn begins after Player turn ends</li>
+							<li>Face card value = 10</li>
+							<li>Ace card value = 1 or 11</li>
+						</ul>
+					</p>
+					<p>
+						<h5>House Rules:</h5>
+						<!-- Specific rules to this version -->
+						<ul>
+							<li>The dealer must when hand value is under 17</li>
+							<li>Dealer must hit on soft 17 (hand value = 17 and Ace value is 11)</li>
+							<li>Ties will push (no winner)</li>
+							<li>Each round is dealt with a new deck</li>
+							<li>No splits</li>
+							<li>No doubling down</li>
+							<li>No Insurance</li>
+						</ul>
 					</p>
 				</div>
 			</section>

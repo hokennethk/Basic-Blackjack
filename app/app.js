@@ -107,6 +107,9 @@ var main = function() {
 	// hide buttons
 	$("div.buttons").css("visibility", "hidden").show();
 
+	// hide dealer score
+	$("#dealer").find("div.score").css("visibility", "hidden");
+
 	// deal
 	newGameDeal();
 }
@@ -188,7 +191,7 @@ var compare = function(playerHand, dealerHand) {
 	}
 
 	// display results
-	console.log(gameResult)
+
 	return gameMessage(gameResult);
 }
 
@@ -210,6 +213,8 @@ var dealerReveal = function (callback) {
 	// to perform AFTER revealing card, such as performing
 	// addition hits to dealer's hand if player hasn't busted
 	$dealerHand.find("div.card-Back").fadeOut(300, callback);
+	$("#dealer").find("div.score").css("visibility", "visible")
+
 
 }
 var dealer = function() {
@@ -237,9 +242,8 @@ var showScore = function() {
 	if (dealerScore > 21) {
 		dealerScore = "BUST";
 	}
-
-	$("#player").find("div.score").html(playerScore);
 	$("#dealer").find("div.score").html(dealerScore);
+	$("#player").find("div.score").html(playerScore);
 }
 
 // Handle game messages
