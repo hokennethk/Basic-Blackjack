@@ -38,8 +38,7 @@ var gameResult;
 // DOM variables
 var $playerHand = $("#player").find("div.cards");
 var $dealerHand = $("#dealer").find("div.cards");
-playersArr = [$playerHand, $dealerHand];
-
+var playersArr = [$playerHand, $dealerHand];
 
 // change Ace logic for dealer (hit on soft17 rule)
 dealerHand.prototype = Object.create(ns.BlackjackHand.prototype);
@@ -100,6 +99,8 @@ var addCard = function(player, card, flipped) {
 }
 
 var main = function() {
+	// function to run for each new game
+
 	// hide past results
 	$("#game-result-box").hide()
 	$("#game-result-box").removeClass();
@@ -122,8 +123,9 @@ var hideButtons = function () {
 	$("div.buttons").css("visibility", "hidden");
 }
 
-// new game should shuffle full deck, deal cards
 var newGameDeal = function() {
+	// deals two cards to each player and checks for blackjack
+
 	// reshuffle full deck
 	deck.combine();	// put used cards back (playing with full deck)
 	deck.shuffle();
@@ -183,7 +185,7 @@ var displayValues = function() {
 }
 
 var compare = function(playerHand, dealerHand) {
-	// compares hands
+	// compares hands. Returns function to display results
 	// true = Player wins
 	// false = dealer wins
 	// "PUSH" = tie
@@ -207,12 +209,12 @@ var compare = function(playerHand, dealerHand) {
 var hit = function(hand) {
 	// deals a card to a given hand
 	hand.addCard(deck.deal(), addCard);
-	// show score
+	// update score on webpage
 	showScore();
 	// for busts, auto compare
 	if (hand.getValue() > 21) {
 		setTimeout(dealerReveal, 500);	// delay for cosmetic purposes
-		return compare(playerHand, dealerHand);
+		compare(playerHand, dealerHand);
 	}
 }
 
@@ -236,13 +238,13 @@ var dealer = function() {
 			hit(dealerHand);
 		};
 		showScore();
-		return compare(playerHand, dealerHand)
+		compare(playerHand, dealerHand)
 	})
 }
 
 var showScore = function(isblackjack) {
-
-	// displays score on webpage
+	// displays score on webpage. isblackjack argument is for
+	// checking blackjack for new deals
 	var playerScore = playerHand.getValue();
 	var dealerScore = dealerHand.getValue();
 	// Handle blackjack if argument is given
@@ -250,7 +252,7 @@ var showScore = function(isblackjack) {
 		playerScore = playerScore === 21 ? "BLACKJACK":playerScore;
 		dealerScore = dealerScore === 21 ? "BLACKJACK":dealerScore;
 	}
-
+	// Busts
 	if (playerScore > 21) {
 		playerScore = "BUST";
 	} 
@@ -263,7 +265,7 @@ var showScore = function(isblackjack) {
 
 // Handle game messages
 var gameMessage = function(gameResult) {
-	// cases: win, lose, push, blackjack
+	// cases: win, lose, push
 	var $gameResult = $("#game-result-box");
 	$gameResult.hide();
 	$gameResult.append("<div class='result-message'></div>");
