@@ -154,6 +154,15 @@ var newGameDeal = function() {
 					// No more cards, play round
 					// display buttons
 					showButtons();
+					// check blackjack
+					if (playerHand.getValue() === 21 ||
+						dealerHand.getValue() === 21) {
+						dealerReveal(function() {
+							showScore(true);
+							compare(playerHand, dealerHand);
+						})
+					}
+
 					return;
 					break;
 			}
@@ -231,11 +240,17 @@ var dealer = function() {
 	})
 }
 
-var showScore = function() {
+var showScore = function(isblackjack) {
 
 	// displays score on webpage
 	var playerScore = playerHand.getValue();
 	var dealerScore = dealerHand.getValue();
+	// Handle blackjack if argument is given
+	if (isblackjack) { 
+		playerScore = playerScore === 21 ? "BLACKJACK":playerScore;
+		dealerScore = dealerScore === 21 ? "BLACKJACK":dealerScore;
+	}
+
 	if (playerScore > 21) {
 		playerScore = "BUST";
 	} 
