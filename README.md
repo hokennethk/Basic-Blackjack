@@ -7,5 +7,5 @@ Personal Project to practice the following topics:
 - OOP
 - jQuery
 
-This project was not a tutorial from any learning resources, and represents my attempt at combining my
+This project was not part of a guided tutorial, and represents my own attempt at combining my
 current knowledge of the topics above.
