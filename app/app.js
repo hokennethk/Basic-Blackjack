@@ -23,7 +23,7 @@ RULES:
 
 - Player rules:
 	- hit or stand anytime value is not > 21
-- Dealer rules: 
+- Dealer rules:
 	- must hit if hand value is a soft 17 or lower (when A value = 11)
 	- must stand once hand value is hard 17 or higher (A value = 1)
 */
@@ -47,7 +47,7 @@ ns.BlackjackHand.prototype.getValueWithAce = function(handVal) {
 		handVal += 10;
 	}
 	return handVal;
-}
+};
 
 //========================================================
 // Editing prototypes to add jquery to manipulate webpage
@@ -55,22 +55,26 @@ ns.BlackjackHand.prototype.getValueWithAce = function(handVal) {
 ns.Card.prototype.getCssClass = function() {
 	// returns a css class name for card sprite
 	return "card-" + this.getRankAsString() + "-" + this.getSuitAsString();
-}
+};
 
 ns.Hand.prototype.addCard = (function() {
-	// applies original addCard method, and also takes a callback to 
+	// applies original addCard method, and also takes a callback to
 	// handle jQuery manipulation
 	var cached = ns.Hand.prototype.addCard;
 	return function(card, callback, flipped) {
+		var player;
 		// apply original function
 		cached.apply(this, arguments);
 		// adding optional callback to handle webpage display
-		if (callback != undefined) {
-			if (this === playerHand) 		{ var player = $playerHand; }
-			else if (this === dealerHand) 	{ var player = $dealerHand; };
+		if (callback !== undefined) {
+			if (this === playerHand) {
+				player = $playerHand;
+			} else if (this === dealerHand) {
+				player = $dealerHand;
+			}
 			callback(player, card, flipped);
 		}
-	}
+	};
 })();
 
 var addCard = function(player, card, flipped) {
@@ -85,24 +89,23 @@ var addCard = function(player, card, flipped) {
 		.last()
 		.append("<div class='card card-Back'></div>");
 	}
-	
+
 	// animate and show cards on webpage
 	playersArr.forEach(function(player) {
 		(function animate() {
 			player.find("div.card:hidden")
 			.not("div.card-Back")	// don't want to have cardback reappear
 			.first()
-			.show(300, animate)
+			.show(300, animate);
 		})();
-	})
-	
-}
+	});
+};
 
 var main = function() {
 	// function to run for each new game
 
 	// hide past results
-	$("#game-result-box").hide()
+	$("#game-result-box").hide();
 	$("#game-result-box").removeClass();
 	$("#game-result-box").find("div.result-message").remove();
 	// hide buttons
@@ -113,15 +116,15 @@ var main = function() {
 
 	// deal
 	newGameDeal();
-}
+};
 
 var showButtons = function () {
 	$("div.buttons").css("visibility", "visible");
-}
+};
 
 var hideButtons = function () {
 	$("div.buttons").css("visibility", "hidden");
-}
+};
 
 var newGameDeal = function() {
 	// deals two cards to each player and checks for blackjack
@@ -162,27 +165,25 @@ var newGameDeal = function() {
 						dealerReveal(function() {
 							showScore(true);
 							compare(playerHand, dealerHand);
-						})
+						});
 					}
-
 					return;
-					break;
 			}
-	
+
 			// Update player score
 			showScore();
-	
+
 			// timer for calls
 			dealRoundCounter++;
 			setTimeout(dealRound, 500);
 		})();
-}
+};
 
 var displayValues = function() {
 	// logs values to console (for testing)
 	console.log("Player Hand = ", playerHand.getValue());
-	console.log("Dealer Hand = ", dealerHand.getValue())
-}
+	console.log("Dealer Hand = ", dealerHand.getValue());
+};
 
 var compare = function(playerHand, dealerHand) {
 	// compares hands. Returns function to display results
@@ -194,17 +195,22 @@ var compare = function(playerHand, dealerHand) {
 	var gameResult;
 
 	// game result
-	if 		(playerVal > 21) {gameResult = false}
-	else if (dealerVal > 21) {gameResult = true}
-	else 	{
-		if (playerVal === dealerVal) {gameResult = "PUSH"}
-		else { gameResult = playerVal > dealerVal; }
+	if (playerVal > 21) {
+		gameResult = false;
+	} else if (dealerVal > 21) {
+		gameResult = true;
+	} else {
+		if (playerVal === dealerVal) {
+			gameResult = "PUSH";
+		} else {
+			gameResult = playerVal > dealerVal;
+		}
 	}
 
 	// display results
 
 	return gameMessage(gameResult);
-}
+};
 
 var hit = function(hand) {
 	// deals a card to a given hand
@@ -216,7 +222,7 @@ var hit = function(hand) {
 		setTimeout(dealerReveal, 500);	// delay for cosmetic purposes
 		compare(playerHand, dealerHand);
 	}
-}
+};
 
 
 var dealerReveal = function (callback) {
@@ -224,10 +230,9 @@ var dealerReveal = function (callback) {
 	// to perform AFTER revealing card, such as performing
 	// addition hits to dealer's hand if player hasn't busted
 	$dealerHand.find("div.card-Back").fadeOut(300, callback);
-	$("#dealer").find("div.score").css("visibility", "visible")
+	$("#dealer").find("div.score").css("visibility", "visible");
+};
 
-
-}
 var dealer = function() {
 	// dealer logic is automated
 	// runs after player stands
@@ -236,11 +241,11 @@ var dealer = function() {
 		// reveal dealer card and hit after revealing
 		while (dealerHand.getValue() < 17) {
 			hit(dealerHand);
-		};
+		}
 		showScore();
-		compare(playerHand, dealerHand)
-	})
-}
+		compare(playerHand, dealerHand);
+	});
+};
 
 var showScore = function(isblackjack) {
 	// displays score on webpage. isblackjack argument is for
@@ -248,20 +253,20 @@ var showScore = function(isblackjack) {
 	var playerScore = playerHand.getValue();
 	var dealerScore = dealerHand.getValue();
 	// Handle blackjack if argument is given
-	if (isblackjack) { 
+	if (isblackjack) {
 		playerScore = playerScore === 21 ? "BLACKJACK":playerScore;
 		dealerScore = dealerScore === 21 ? "BLACKJACK":dealerScore;
 	}
 	// Busts
 	if (playerScore > 21) {
 		playerScore = "BUST";
-	} 
+	}
 	if (dealerScore > 21) {
 		dealerScore = "BUST";
 	}
 	$("#dealer").find("div.score").html(dealerScore);
 	$("#player").find("div.score").html(playerScore);
-}
+};
 
 // Handle game messages
 var gameMessage = function(gameResult) {
@@ -272,15 +277,15 @@ var gameMessage = function(gameResult) {
 	switch (gameResult) {
 		case true:
 			$gameResult.addClass("win");
-			$("div.result-message").last().text("You Win!")
+			$("div.result-message").last().text("You Win!");
 			break;
 		case false:
 			$gameResult.addClass("lose");
-			$("div.result-message").last().text("You lose :(")
+			$("div.result-message").last().text("You lose :(");
 			break;
 		default:
 			$gameResult.addClass("push");
-			$("div.result-message").last().text("PUSH!")
+			$("div.result-message").last().text("PUSH!");
 			break;
 	}
 
@@ -288,11 +293,10 @@ var gameMessage = function(gameResult) {
 	// hide buttons
 	$("div.buttons").hide();
 	// show message
-	$gameResult.show()
-}
+	$gameResult.show();
+};
 
 
 // Load main when document is ready
-$(document).ready(main())
+$(document).ready(main());
 
-	
