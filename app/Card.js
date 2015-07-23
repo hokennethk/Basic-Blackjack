@@ -20,7 +20,7 @@ ns.Card = function(rank, suit) {
 		"Q":12,
 		"J":11
 	}
-	
+
 	var suitMap = {
 		"Spades"	: 0,
 		"Clubs"		: 1,
@@ -29,28 +29,28 @@ ns.Card = function(rank, suit) {
 	}
 	*/
 
-}
+};
 
 ns.Card.prototype.getSuit = function() {
 	return this.suit;
-}
+};
 ns.Card.prototype.getRank = function() {
 	return this.rank;
-}
+};
 
 ns.Card.prototype.getSuitAsString = function() {
 	return ["Spades", "Clubs", "Diamonds", "Hearts"][this.suit];
-}
+};
 
 ns.Card.prototype.getRankAsString = function() {
 	var rankMap = {
 		"1"	:"Ace",
-		"11": "Jack", 
-		"12":"Queen", 
+		"11": "Jack",
+		"12":"Queen",
 		"13":"King"
-	}
+	};
 	return rankMap[this.rank] || this.rank;
-}
+};
 ns.Card.prototype.toString = function() {
 	return this.getRankAsString() + " of " + this.getSuitAsString();
-}
+};

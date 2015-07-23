@@ -17,13 +17,13 @@ ns.Deck = function() {
 	this.cards = [];
 	for (var rank = 1; rank < 14; rank++) {
 		for (var suit = 0; suit < 4; suit++) {
-			this.cards.push(new ns.Card(rank, suit))
+			this.cards.push(new ns.Card(rank, suit));
 		}
 	}
 
 	// keep track of used cards
 	this.usedCards = [];
-}
+};
 
 
 ns.Deck.prototype.shuffle = function() {
@@ -37,12 +37,12 @@ ns.Deck.prototype.shuffle = function() {
 };
 
 ns.Deck.prototype.combine = function() {
-	// combines remaining cards with used cards to form a 
+	// combines remaining cards with used cards to form a
 	// new deck. Then shuffles.
 	this.cards = this.cards.concat(this.usedCards);
 	this.usedCards = [];
 	this.shuffle();
-}
+};
 
 ns.Deck.prototype.deal = function() {
 	// returns a card from the "top" of the deck
@@ -52,9 +52,9 @@ ns.Deck.prototype.deal = function() {
 	var dealt =  this.cards.shift();
 	this.usedCards.push(dealt);
 	return dealt;
-}
+};
 
 ns.Deck.prototype.cardsLeft = function() {
 	// returns remaining number of cards in deck
 	return this.cards.length;
-}
+};
